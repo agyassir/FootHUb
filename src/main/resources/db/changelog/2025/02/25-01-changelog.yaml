@@ -1,0 +1,276 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1740516250431-1
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_club
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: date_of_establishement
+                  type: DATETIME
+              - column:
+                  name: owner
+                  type: VARCHAR(255)
+              - column:
+                  name: stadium_id
+                  type: BIGINT
+            tableName: club
+  - changeSet:
+      id: 1740516250431-2
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_community
+                  name: id
+                  type: UUID
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: rules
+                  type: VARCHAR(255)
+              - column:
+                  name: admin_id
+                  type: BIGINT
+            tableName: community
+  - changeSet:
+      id: 1740516250431-3
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: community_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: users_id
+                  type: BIGINT
+            tableName: community_users
+  - changeSet:
+      id: 1740516250431-4
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_location
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  name: address
+                  type: VARCHAR(255)
+            tableName: location
+  - changeSet:
+      id: 1740516250431-5
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_player
+                  name: id
+                  type: UUID
+              - column:
+                  name: firstname
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: middle_name
+                  type: VARCHAR(255)
+              - column:
+                  name: age
+                  type: INT
+              - column:
+                  name: nationality
+                  type: VARCHAR(255)
+              - column:
+                  name: position
+                  type: SMALLINT
+              - column:
+                  name: number
+                  type: INT
+            tableName: player
+  - changeSet:
+      id: 1740516250431-6
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_stadium
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: date_of_construction
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: capacity
+                  type: INT
+              - column:
+                  name: location_id
+                  type: BIGINT
+            tableName: stadium
+  - changeSet:
+      id: 1740516250431-7
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_transfer
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: player_id
+                  type: UUID
+              - column:
+                  name: club_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: DOUBLE
+            tableName: transfer
+  - changeSet:
+      id: 1740516250431-8
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: users_id
+            constraintName: uc_community_users_users
+            tableName: community_users
+  - changeSet:
+      id: 1740516250431-9
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: stadium_id
+            baseTableName: club
+            constraintName: FK_CLUB_ON_STADIUM
+            referencedColumnNames: id
+            referencedTableName: stadium
+  - changeSet:
+      id: 1740516250431-10
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: admin_id
+            baseTableName: community
+            constraintName: FK_COMMUNITY_ON_ADMIN
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1740516250431-11
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: location_id
+            baseTableName: stadium
+            constraintName: FK_STADIUM_ON_LOCATION
+            referencedColumnNames: id
+            referencedTableName: location
+  - changeSet:
+      id: 1740516250431-12
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: club_id
+            baseTableName: transfer
+            constraintName: FK_TRANSFER_ON_CLUB
+            referencedColumnNames: id
+            referencedTableName: club
+  - changeSet:
+      id: 1740516250431-13
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: player_id
+            baseTableName: transfer
+            constraintName: FK_TRANSFER_ON_PLAYER
+            referencedColumnNames: id
+            referencedTableName: player
+  - changeSet:
+      id: 1740516250431-14
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: community_id
+            baseTableName: community_users
+            constraintName: fk_comuse_on_community
+            referencedColumnNames: id
+            referencedTableName: community
+  - changeSet:
+      id: 1740516250431-15
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: users_id
+            baseTableName: community_users
+            constraintName: fk_comuse_on_user
+            referencedColumnNames: id
+            referencedTableName: users
+

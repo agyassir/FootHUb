@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: jwttest
+  datasource:
+    username: myuser
+    url: jdbc:postgresql://localhost:5432/jwt
+    password: mypassword
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:db/master.yml
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+app:
+  jwt:
+    secret: y4539d3659132c190d8176d7970077860196714930e67284fa48e4468ae4bfc9422485c448e087d5dc1bb3547b0cdc03a3c029d64d7f546849a3b98aa5b5724e7e2e6d3d729d80521d681560afa2b3c245b819e01875dc5fc019e14b02a41b3810f9ebf249a0151d2e11028cd8f361eab0a317e6817ce63b655e70f586dd81735488094b2ca533f56150ce658295294519fae3620469dd4e284e3bf0599ea1badecb114b13601c3d9e14badfbfdefb38bb2d0dfeaf775d310a35f8df6584ff463bc25edf33f17a998c91c1fbd158bf025dddae0c907ffd994cd9ca64af031fce90efe5189d7428b1ed0372d1d81dc87d700dc088e5a8b8a86e7cea9b33e276c70
+    expiration-ms: 86400000
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+server:
+  servlet:
+    context-path: /api

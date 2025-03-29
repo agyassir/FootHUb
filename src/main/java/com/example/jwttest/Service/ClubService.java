@@ -1,5 +1,6 @@
 package com.example.jwttest.Service;
 
+import com.example.jwttest.DTO.Club.ClubDTO;
 import com.example.jwttest.DTO.Club.ClubRequest;
 import com.example.jwttest.Entity.Club;
 import com.example.jwttest.Entity.Game;
@@ -28,8 +29,8 @@ public class ClubService {
                 .map(this::convertClubListToString).collect(Collectors.joining());
     }
 
-    public Club getClubById(Long id) {
-        return clubRepository.findById(id).orElse(null);
+    public ClubDTO getClubById(Long id) {
+        return modelMapper.map(clubRepository.findById(id).orElse(null), ClubDTO.class);
     }
 
     public Club saveClub(ClubRequest club) {
@@ -51,15 +52,10 @@ public class ClubService {
         clubRepository.deleteById(id);
     }
 
-    public String hotestClubs(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        try {
+    public List<ClubDTO> hotestClubs(){
+
             List<Club> games = clubRepository.findTop6ByOrderByPopularityScoreDesc();
-            return objectMapper.writeValueAsString(games); // Converts the list to a JSON array
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert games to JSON", e);
-        }
+            return games.stream().map((element) -> modelMapper.map(element, ClubDTO.class)).collect(Collectors.toList());// Converts the list to a JSON array
     }
 
 

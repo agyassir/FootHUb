@@ -1,22 +1,33 @@
 package com.example.jwttest.Service.League;
 
 
+import com.example.jwttest.DTO.LeagueStanding.LeagueStandingDTO;
 import com.example.jwttest.Entity.Game;
 import com.example.jwttest.Entity.League;
+import com.example.jwttest.Entity.LeagueSeason;
+import com.example.jwttest.Entity.LeagueStanding;
 import com.example.jwttest.Repository.LeagueRepository;
+import com.example.jwttest.Repository.LeagueSeasonRepository;
+import com.example.jwttest.Repository.LeagueStandingRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class LeagueService {
 
     private LeagueRepository leagueRepository;
+    private LeagueStandingRepository leagueStandingRepository;
+    private LeagueSeasonRepository leagueSeasonRepository;
+    private ModelMapper modelMapper;
+
 
     public String findAll(){
         return convertToArrayJson(leagueRepository.findAll());
@@ -30,6 +41,12 @@ public class LeagueService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert clubs to JSON", e);
         }
+    }
+
+    public List<LeagueStandingDTO> getStandingByClub(Long id){
+
+        LeagueSeason season=leagueSeasonRepository.findBySeasonAndLeague("24-25",leagueRepository.findById(id).orElseThrow(null)).orElseThrow(null);
+        return leagueStandingRepository.findBySeason(season.getId()).stream().map((element) -> modelMapper.map(element, LeagueStandingDTO.class)).collect(Collectors.toList());
     }
 
 

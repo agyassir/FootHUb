@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface GameRepository extends JpaRepository<Game,Long> {
     @Query("SELECT g FROM Game g WHERE DATE(g.date) = :date")
@@ -22,4 +23,11 @@ public interface GameRepository extends JpaRepository<Game,Long> {
 
     @Query("SELECT g FROM Game g WHERE FUNCTION('DATE', g.date) = CURRENT_DATE")
     List<Game> findToday();
+
+    @Query("SELECT m FROM Game m " +
+            "WHERE (m.homeTeam.id = :clubId OR m.awayTeam.id = :clubId) " +
+            "AND m.date > CURRENT_TIMESTAMP " +
+            "ORDER BY m.date ASC limit 1")
+    Optional<Game> findNextUpcomingMatchByClubId(@Param("clubId") Long clubId);
+    List<Game> findByHomeTeamOrAwayTeam(Club homeTeam, Club awayTeam);
 }

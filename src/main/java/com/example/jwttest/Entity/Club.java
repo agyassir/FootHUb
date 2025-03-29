@@ -1,6 +1,7 @@
 package com.example.jwttest.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -18,6 +19,8 @@ public class Club {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String Name;
+    @Column(name = "date_of_establishement")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date DateOfEstablishement;
     private String Owner;
     private String Image;
@@ -28,7 +31,11 @@ public class Club {
     @OneToMany(mappedBy = "club")
     @JsonBackReference
     private List<Player> players;
+    @OneToOne
+    private Coach coach;
     @ManyToOne
     private League league;
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
+    private List<LeagueStanding> leagueStandings;
 
 }

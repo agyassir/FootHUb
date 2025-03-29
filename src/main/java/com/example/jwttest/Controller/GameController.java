@@ -2,6 +2,8 @@ package com.example.jwttest.Controller;
 
 
 
+import com.example.jwttest.DTO.Club.ClubDTO;
+import com.example.jwttest.DTO.Game.GameDTO;
 import com.example.jwttest.Entity.Club;
 import com.example.jwttest.Entity.Game;
 import com.example.jwttest.Entity.League;
@@ -85,7 +87,7 @@ public class GameController {
                 parsedDate = slashFormat.parse(date); // Try slash format
             }
 
-            String games = gameService.getGamesByDate(parsedDate);
+            List<GameDTO> games = gameService.getGamesByDate(parsedDate);
             return ResponseEntity.ok(games);
         } catch (ParseException e) {
             return ResponseEntity.badRequest().body("Invalid date format. Use YYYY-MM-DD or YYYY/MM/DD.");
@@ -95,7 +97,7 @@ public class GameController {
     // Get games by home team ID
     @GetMapping("/home-team/{homeTeamId}")
     public ResponseEntity<String> getGamesByHomeTeam(@PathVariable Long homeTeamId) {
-        Club homeTeam= clubService.getClubById(homeTeamId);
+        ClubDTO homeTeam= clubService.getClubById(homeTeamId);
         String games = gameService.getGamesByHomeTeam(homeTeam);
         return ResponseEntity.ok(games);
     }
@@ -103,7 +105,7 @@ public class GameController {
     // Get games by away team ID
     @GetMapping("/away-team/{awayTeamId}")
     public ResponseEntity<String> getGamesByAwayTeam(@PathVariable Long awayTeamId) {
-        Club awayTeam= clubService.getClubById(awayTeamId);
+        ClubDTO awayTeam= clubService.getClubById(awayTeamId);
         String games = gameService.getGamesByAwayTeam(awayTeam);
         return ResponseEntity.ok(games);
     }
@@ -119,5 +121,17 @@ public class GameController {
 
         return ResponseEntity.ok(gameService.getTodaysGame());
     }
+
+    @GetMapping("/upcomingMatch/{id}")
+    public ResponseEntity<GameDTO> getUpcomingMatch(@PathVariable Long id){
+        return ResponseEntity.ok(gameService.getUpcomingMatch(id));
+    }
+
+    @GetMapping("/club/{id}")
+    public ResponseEntity<List<GameDTO>> getGamesByClub(@PathVariable Long id){
+        List<GameDTO> games = gameService.getGamesByClub(id);
+        return ResponseEntity.ok(games);
+    }
+
 
 }

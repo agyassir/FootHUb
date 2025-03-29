@@ -1,6 +1,7 @@
 package com.example.jwttest.Controller;
 
 
+import com.example.jwttest.DTO.Club.ClubDTO;
 import com.example.jwttest.DTO.Club.ClubRequest;
 import com.example.jwttest.Entity.Club;
 import com.example.jwttest.Service.ClubService;
@@ -25,11 +26,11 @@ public class ClubController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getClubById(@PathVariable Long id) {
-        return ResponseEntity.ok(clubService.convertClubListToString(clubService.getClubById(id)));
+    public ResponseEntity<ClubDTO> getClubById(@PathVariable Long id) {
+        return ResponseEntity.ok(clubService.getClubById(id));
     }
     @GetMapping("/hot")
-    public ResponseEntity<String> getHotestClub(){
+    public ResponseEntity<List<ClubDTO>> getHotestClub(){
         return ResponseEntity.ok(clubService.hotestClubs());
     }
     @PostMapping(" ")

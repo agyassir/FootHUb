@@ -8,6 +8,9 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: classpath:db/master.yml
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
   jpa:
     database: postgresql
     show-sql: true

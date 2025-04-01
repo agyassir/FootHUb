@@ -3,9 +3,11 @@ package com.example.jwttest.Controller;
 
 import com.example.jwttest.DTO.Player.PLayerRequest;
 import com.example.jwttest.DTO.Player.PlayerDTO;
+import com.example.jwttest.DTO.Player.PlayerTransferDTO;
 import com.example.jwttest.Entity.Player;
 import com.example.jwttest.Entity.ENUM.Position;
 import com.example.jwttest.Service.Player.PlayerService;
+import com.example.jwttest.Service.PlayerTransfer.PlayerTrasferService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -14,13 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/player", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PlayerController {
     private final PlayerService playerService;
-
+    private final PlayerTrasferService playerTrasferService;
     @GetMapping()
     public ResponseEntity<String> getAll(){
 
@@ -33,13 +36,19 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.getTrendingPlayer());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<String> getById(@PathVariable long id){
+    public ResponseEntity<PlayerDTO> getById(@PathVariable long id){
         return ResponseEntity.ok(playerService.getPlayerById(id));
     }
-    @GetMapping("/{age}")
+    @GetMapping("/age/{age}")
     public ResponseEntity<String> getByAge(@PathVariable int age){
         return ResponseEntity.ok(playerService.getPlayersByAge(age));
     }
+
+        @GetMapping("/transfer/{id}")
+    public ResponseEntity<List<PlayerTransferDTO>> getPLayerDTO(@PathVariable long id){
+        return ResponseEntity.ok(playerTrasferService.getPlayerTransfers(id));
+    }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<String> getPlayersByName(@PathVariable String name) {
         String players = playerService.getPlayersByName(name);

@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,21 +26,22 @@ public class ClubService {
         this.modelMapper = modelMapper;
     }
 
-    public String getAllClubs() {
-        return clubRepository.findAll().stream()
-                .map(this::convertClubListToString).collect(Collectors.joining());
+    public Page<ClubDTO> getAllClubs(Pageable pageable) {
+        Page<Club> clubsPage = clubRepository.findAll(pageable);
+        return clubsPage.map(club -> modelMapper.map(club, ClubDTO.class));
     }
 
     public ClubDTO getClubById(Long id) {
         return modelMapper.map(clubRepository.findById(id).orElse(null), ClubDTO.class);
     }
 
-    public Club saveClub(ClubRequest club) {
+    public ClubDTO saveClub(ClubRequest clubRequest) {
+        ClubDTO club= modelMapper.map(clubRequest,ClubDTO.class);
         Club clubEntity = modelMapper.map(club, Club.class);
-        return clubRepository.save(clubEntity);
+        return modelMapper.map(clubRepository.save(clubEntity), ClubDTO.class);
     }
 
-    public Club updateClub(Long id, ClubRequest club) {
+    public Club updateClub(Long id, ClubDTO club) {
         Club existingClub = clubRepository.findById(id).orElse(null);
         if (existingClub != null) {
             modelMapper.map(club, existingClub);

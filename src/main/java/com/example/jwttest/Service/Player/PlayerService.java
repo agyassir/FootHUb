@@ -11,7 +11,7 @@ public interface PlayerService {
 
          String getAllPlayers() ;
 
-       String getPlayerById(Long id);
+       PlayerDTO getPlayerById(Long id);
     String getPlayersByAge(int age);
     String getPlayersByName(String name);
     String getPlayersByClub (long id);

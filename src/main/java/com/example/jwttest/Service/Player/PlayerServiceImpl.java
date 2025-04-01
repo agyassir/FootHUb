@@ -40,8 +40,8 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     @Override
-    public String getPlayerById(Long id) {
-        return this.convertClubListToString((playerRepository.findById(id).orElse(null)));
+    public PlayerDTO getPlayerById(Long id) {
+        return (modelMapper.map(playerRepository.findById(id).orElse(null), PlayerDTO.class));
     }
     @Override
     public Player savePlayer(PLayerRequest player) {

@@ -1,5 +1,6 @@
 package com.example.jwttest.Service.PlayerTransfer;
 
+import com.example.jwttest.DTO.Player.PlayerTransferDTO;
 import com.example.jwttest.DTO.PlayerTransfer.TransferRequest;
 import com.example.jwttest.Entity.Club;
 import com.example.jwttest.Entity.League;
@@ -14,7 +15,7 @@ public interface PlayerTrasferService {
     void createPlayerTransfer(TransferRequest request);
     void updatePlayerTransfer(TransferRequest request);
     void deletePlayerTransfer();
-    List<PlayerTransfer> getPlayerTransfers(long playerId);
+    List<PlayerTransferDTO> getPlayerTransfers(long playerId);
     List<PlayerTransfer> getClubTransfers(Club club);
     List<PlayerTransfer> getTransferOfYear(Date year);
 

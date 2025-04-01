@@ -9,6 +9,9 @@ import java.util.Date;
 public class ClubRequest {
 
 
+    @Null
+    private Long id=null;
+
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must be less than 100 characters")
     private String name;
@@ -23,4 +26,16 @@ public class ClubRequest {
 
     @NotNull(message = "Stadium is required")
     private Long stadiumId;
+
+    @NotNull(message = "popularity is required")
+    @Min(60)
+    @Max(100)
+    private Integer popularityScore;
+
+    @NotNull(message = "league is required")
+    private Long leagueId;
+
+    @Null
+    private String image=null;
+
 }

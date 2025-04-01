@@ -22,6 +22,9 @@ public class PlayerDTO {
     private String nationality;
     private String position;
     private Integer number;
+    private String image;
+    private String ClubName;
+    private Long ClubId;
     private double marketValue;
     private Date contractUntil;
     private boolean trending;

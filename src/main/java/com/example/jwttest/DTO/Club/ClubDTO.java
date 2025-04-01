@@ -20,7 +20,7 @@ public class ClubDTO {
     private String owner;
     private String image;
     private Integer popularityScore;
-
+    private Long StadiumId;
     private String StadiumName;
     private int StadiumCapacity;
     private String CoachName;

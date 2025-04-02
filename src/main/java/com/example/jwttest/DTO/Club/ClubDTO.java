@@ -33,5 +33,9 @@ public class ClubDTO {
     private Long leagueId;
 
 
-
+    public ClubDTO(long id, String name, int popularityScore) {
+        this.id = id;
+        this.name = name;
+        this.popularityScore = popularityScore;
+    }
 }

@@ -75,10 +75,13 @@ public class ClubController {
     }
 
 
-    @PostMapping("/{id}/image")
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,@PathVariable long id) throws IOException {
-        System.out.println("ana hna");
+        public ResponseEntity<String> uploadFile(
+            @PathVariable long id,
+            @RequestParam("file") MultipartFile file) throws IOException {
+//        System.out.println("Received content type: " + contentType);
+
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("File is empty!");
         }

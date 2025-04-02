@@ -2,6 +2,7 @@ package com.example.jwttest.DTO.Club;
 
 import com.example.jwttest.DTO.LeagueStanding.LeagueStandingDTO;
 import com.example.jwttest.DTO.Player.PlayerDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ClubDTO {
     private Long id;
     private String name;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date DateOfEstablishement;
     private String owner;
     private String image;

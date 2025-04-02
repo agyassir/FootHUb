@@ -12,6 +12,7 @@ import com.example.jwttest.Repository.LeagueStandingRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -43,10 +44,20 @@ public class LeagueService {
         }
     }
 
-    public List<LeagueStandingDTO> getStandingByClub(Long id){
+    public List<LeagueStandingDTO> getStandingByClub(Long id) {
+        // 1. Find league with proper exception handling
+        League club = leagueRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("League not found with id: " + id));
 
-        LeagueSeason season=leagueSeasonRepository.findBySeasonAndLeague("24-25",leagueRepository.findById(id).orElseThrow(null)).orElseThrow(null);
-        return leagueStandingRepository.findBySeason(season.getId()).stream().map((element) -> modelMapper.map(element, LeagueStandingDTO.class)).collect(Collectors.toList());
+
+        LeagueSeason season = leagueSeasonRepository.findBySeasonAndLeague("24-25", club)
+                .orElseThrow(() -> new EntityNotFoundException("Season '24-25' not found for league: " + id));
+
+
+        return leagueStandingRepository.findBySeason(season.getId())
+                .stream()
+                .map(element -> modelMapper.map(element, LeagueStandingDTO.class))
+                .collect(Collectors.toList());
     }
 
 

@@ -17,4 +17,6 @@ public interface LeagueStandingRepository extends JpaRepository<LeagueStanding,L
             nativeQuery = true) // Changed to match JPA entity relationship
     List<LeagueStanding> findBySeason(
             @Param("seasonId") Long seasonId);
+
+    List<LeagueStanding> findByClubId(long clubId);
 }

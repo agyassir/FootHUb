@@ -4,10 +4,15 @@ import com.example.jwttest.DTO.Club.ClubDTO;
 import com.example.jwttest.DTO.Club.ClubRequest;
 import com.example.jwttest.Entity.Club;
 import com.example.jwttest.Entity.Game;
+import com.example.jwttest.Entity.League;
+import com.example.jwttest.Entity.Stadium;
 import com.example.jwttest.Repository.ClubRepository;
+import com.example.jwttest.Repository.LeagueRepository;
+import com.example.jwttest.Repository.StadiumRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,15 +21,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@AllArgsConstructor
 @Service
 public class ClubService {
     private final ClubRepository clubRepository;
+    private final LeagueRepository leagueRepository;
+    private final StadiumRepository stadiumRepository;
     private final ModelMapper modelMapper;
 
-    public ClubService(ClubRepository clubRepository, ModelMapper modelMapper) {
-        this.clubRepository = clubRepository;
-        this.modelMapper = modelMapper;
-    }
+
 
     public Page<ClubDTO> getAllClubs(Pageable pageable) {
         Page<Club> clubsPage = clubRepository.findAll(pageable);
@@ -41,16 +47,36 @@ public class ClubService {
         return modelMapper.map(clubRepository.save(clubEntity), ClubDTO.class);
     }
 
-    public Club updateClub(Long id, ClubDTO club) {
+    public Club updateClub(Long id, ClubDTO clubDTO) {
         Club existingClub = clubRepository.findById(id).orElse(null);
         if (existingClub != null) {
-            modelMapper.map(club, existingClub);
-            System.out.println(existingClub);
+            // Update simple fields
+            existingClub.setName(clubDTO.getName());
+            if (clubDTO.getDateOfEstablishement() != null) {
+                existingClub.setDateOfEstablishement(clubDTO.getDateOfEstablishement());
+            }
+            System.out.println(clubDTO.getDateOfEstablishement());
+            existingClub.setOwner(clubDTO.getOwner());
+            existingClub.setPopularityScore(clubDTO.getPopularityScore());
+
+            // Handle stadium update properly
+            if (clubDTO.getStadiumId() != null) {
+                Stadium stadium = stadiumRepository.findById(clubDTO.getStadiumId())
+                        .orElseThrow(() -> new RuntimeException("Stadium not found"));
+                existingClub.setStadium(stadium);
+            }
+
+            // Handle league update properly
+            if (clubDTO.getLeagueId() != null) {
+                League league = leagueRepository.findById(clubDTO.getLeagueId())
+                        .orElseThrow(() -> new RuntimeException("League not found"));
+                existingClub.setLeague(league);
+            }
+
             return clubRepository.save(existingClub);
         }
         return null;
-        }
-
+    }
     public void deleteClub(Long id) {
         clubRepository.deleteById(id);
     }

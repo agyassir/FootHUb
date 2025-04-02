@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Enable CORS first
+                // 1. CORS must come first
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 // 2. Disable CSRF
@@ -60,19 +60,21 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/player/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/transfers/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/stadium/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/games/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/league/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/clubs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/clubs/**").permitAll() // Only GET is public
+                        .requestMatchers(HttpMethod.GET, "/stadium/**").permitAll() // Only GET is public
+                        .requestMatchers(HttpMethod.GET, "/games/**").permitAll() // Only GET is public
+                        .requestMatchers(HttpMethod.GET, "/league/**").permitAll() // Only GET is public
+                        .requestMatchers(HttpMethod.GET, "/standing/**").permitAll() // Only GET is public
+                        // Other public endpoints...
                         .anyRequest().authenticated()
                 )
 
-                // 6. Add JWT filter
+                // 6. JWT filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     // 7. CORS Configuration
     @Bean

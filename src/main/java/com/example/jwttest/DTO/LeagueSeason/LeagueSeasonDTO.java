@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class LeagueSeasonDTO {
 private Long id;
 private String Season;
+private Long leagueId;
 private String leagueName;
 
 }

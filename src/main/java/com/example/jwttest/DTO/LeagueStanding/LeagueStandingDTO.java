@@ -13,6 +13,7 @@ public class LeagueStandingDTO {
     private Long id;
     private String ClubName;
     private String ClubImage;
+    private Long ClubId;
     private int points;
     private int standing;
     private int match_played;
